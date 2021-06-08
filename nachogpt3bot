@@ -1,0 +1,23 @@
+pip install pyTelegramBotAPI
+pip install openai
+
+import os
+import telebot
+import openai
+ 
+
+openai.api_key ='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'
+API_KEY ='1888976787:AAHVlXF4_M80vjU2vqUVKUjN7I0pCsEo5Wk'
+bot = telebot.TeleBot(API_KEY)
+texto="The following is a conversation with an AI assistant. The assistant is helpful, creative, clever, and very friendly.\n\nhuman: Hello, who are you?\nai: I am an AI created by OpenAI. How can I help you today?\nhuman: "
+
+
+
+@bot.message_handler(func=lambda m: True)
+def gpt3response(message):
+    strmessage=message.text
+    completion = openai.Completion.create(engine="davinci", prompt=texto + strmessage + "\n", max_tokens= 100,temperature=0.9,top_p=1, frequency_penalty=0,presence_penalty=0.6,stop=["human"])
+    response=completion.choices[0].text
+    bot.send_message(message.chat.id,response)
+    
+bot.polling()
